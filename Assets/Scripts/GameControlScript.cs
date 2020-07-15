@@ -11,27 +11,58 @@ public class GameControlScript : MonoBehaviour
     public GameObject Skeleton;
     public GameObject Conveyor;
 
+    public GameObject highscore;
     public TextMeshProUGUI score_text;
     public int score;
 
     public GameObject restartPanel;
 
+    public bool lost = false;
+
     private void Update()
     {
-        score = Mathf.CeilToInt(Mathf.Floor(-Conveyor.transform.position.z/10f)/2f);
+        if (!lost)
+        {
+            score = Mathf.CeilToInt(Mathf.Floor(-Conveyor.transform.position.z / 10f) / 2f);
+        }
+        GetComponent<SpeedControl>().diff_speed = score / 10f;
         score_text.text = score.ToString();
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0.0f;
+    }
+    public void Continue()
+    {
+        Time.timeScale = 1.0f;
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 
     public void Lose()
     {
         Rig.SetActive(false);
 
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>().shakeDuration = 0.3f;
+
+        lost = true;
+
         StartCoroutine("SlowDownBelt");
         Skeleton.GetComponent<Rigidbody>().isKinematic = false;
         foreach (var item in Skeleton.GetComponentsInChildren<Rigidbody>())
         {
             item.isKinematic = false;
+
         }
+
+        GetComponent<AudioSource>().Play();
+
+        highscore.GetComponent<HighScoreScript>().UpdateHighScore(score);
+
         Invoke("LaunchBody", 1.0f);
     }
 

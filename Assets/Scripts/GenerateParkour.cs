@@ -10,7 +10,8 @@ public class GenerateParkour : MonoBehaviour
 
     public GameObject player;
 
-    public float speed = 1.0f;
+    public float speed = 2.0f;
+
 
     float lim_z = 0f;
     void Parkour()

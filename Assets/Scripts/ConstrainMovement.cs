@@ -11,6 +11,9 @@ public class ConstrainMovement : MonoBehaviour
     bool isRight;
     float distance;
     Vector3 pos;
+
+    float x_offset = 0.3f;
+
     void Start()
     {
         
@@ -26,12 +29,13 @@ public class ConstrainMovement : MonoBehaviour
 
         if (isRight)
         {
-            pos.x = Mathf.Clamp(pos.x,0.75f-distance,0.75f);
+            pos.x = Mathf.Clamp(pos.x, x_offset +0.75f -distance,0.75f);
         }
         else
         {
-            pos.x = Mathf.Clamp(pos.x,-0.75f, -0.75f + distance);
+            pos.x = Mathf.Clamp(pos.x,-0.75f  , -0.75f + distance - x_offset);
         }
+        pos.z = 0;
 
         transform.position = pos;
     }

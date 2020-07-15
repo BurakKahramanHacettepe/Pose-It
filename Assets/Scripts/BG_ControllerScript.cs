@@ -25,6 +25,15 @@ public class BG_ControllerScript : MonoBehaviour
                 behind = bg1;
             }
 
+            int x0 = Random.Range(-1.0f, 1.0f) > 0 ? 1 : -1;
+            int z0 = Random.Range(-1.0f, 1.0f) > 0 ? 1 : -1;
+            int x1 = Random.Range(-1.0f, 1.0f) > 0 ? 1 : -1;
+            int z1 = Random.Range(-1.0f, 1.0f) > 0 ? 1 : -1;
+
+
+            behind.transform.GetChild(0).transform.localScale = new Vector3(x0,1,z0);
+            behind.transform.GetChild(1).transform.localScale = new Vector3(x1, 1, z1);
+
             behind.transform.position += 2 * new Vector3(0, 0, 80f);
             lim_z += 80f;
         }

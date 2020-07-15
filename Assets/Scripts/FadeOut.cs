@@ -10,28 +10,40 @@ public class FadeOut : MonoBehaviour
     private MaterialPropertyBlock _propBlock;
 
     private float alpha = 1f;
-    private Color fade = new Color(0,1,0,1);
+    public Color fade = new Color(0,1,0,1);
 
     void Awake()
     {
         _propBlock = new MaterialPropertyBlock();
         _renderer = GetComponent<Renderer>();
     }
+    private void Start()
+    {
+        print(transform.position.z);
+        if (transform.position.z > 21f)
+        {
+            GetComponent<Renderer>().material.SetColor("_Color", Color.clear);
+            GetComponent<Outline>().OutlineColor = Color.clear;
+        }
+    }
+    public void toRed()
+    {
+        fade = Color.red;
+    }
 
     void Update()
     {
+       
         if (transform.position.z <= 0f)
         {
             alpha -= Speed * Time.deltaTime;
             alpha = Mathf.Clamp(alpha, 0f, 1f);
             fade.a = alpha;
             _renderer.GetPropertyBlock(_propBlock);
-            // Assign our new value.
             _propBlock.SetColor("_Color", fade);
-            // Apply the edited values to the renderer.
             _renderer.SetPropertyBlock(_propBlock);
-
             GetComponent<Outline>().OutlineColor = fade;
+
 
             // Put the game object in the ignore raycast layer (2)
             gameObject.layer = 2;
